@@ -31,7 +31,7 @@ class Task(ft.UserControl):
             ]
         )
         
-
+        
         self.status = st.Status.NOT_STARTED
         self.timer = None
         self.subTasks = []
@@ -63,16 +63,33 @@ class Task(ft.UserControl):
         
         self.update()
 
+    def start_edit_task(self, e):
+        self.display_task.visible = False
+        self.edit.disabled = False
+        self.edit.visible = True
+        self.update()
+
+    def end_edit_task(self, e):
+        self.display_task.label = self.edit.value
+        self.display_task.visible = True
+        self.edit.visible = False
+        self.edit.disabled = True  
+        self.update()
+
     def build(self):
         self.display_task = ft.Checkbox(value = False, label = self.name)
-       
+
+        self.edit = ft.TextField(value=self.display_task.label, 
+                                 on_submit=self.end_edit_task, visible=False, disabled=True)
+
         task_menu = ft.Row(    
             controls = [
+                self.edit,
                 ft.IconButton(
                     icon=ft.icons.EDIT,
                     icon_size= 20,
                     tooltip = "Edit task",
-                    # on_click=self.pause
+                    on_click=self.start_edit_task
                 ),
                 ft.IconButton(
                     icon=ft.icons.DELETE_ROUNDED,
@@ -97,11 +114,20 @@ class Task(ft.UserControl):
             ]
         )
 
+        
+        # Container
+        # |    Column    
+        # |    |    Row (TextField + FloatingActionButton) 
+        # |    |    Task    
+              
+        
+    
+
         return ft.Column(
             controls = [
                 task_view,
                 self.post_note,
-                self.description
+                self.description 
             ]    
         )
         
