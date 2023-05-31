@@ -47,7 +47,7 @@ class Task(ft.UserControl):
         self.description.disabled=False
         self.description.extension_set=ft.MarkdownExtensionSet.GITHUB_WEB
         self.description.code_theme="atom-one-dark"
-        self.description.code_style=ft.TextStyle(font_family="Roboto Mono")
+        #self.description.code_style=ft.TextStyle(font_family="Roboto Mono")
          
         self.update()
     
@@ -58,13 +58,14 @@ class Task(ft.UserControl):
     def make_notes_visible(self, e):
         self.post_note.disabled=False
         self.post_note.visible=True
+
+        self.description.visible = False
         
         self.update()
 
     def build(self):
         self.display_task = ft.Checkbox(value = False, label = self.name)
        
-        
         task_menu = ft.Row(    
             controls = [
                 ft.IconButton(
