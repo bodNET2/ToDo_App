@@ -40,11 +40,14 @@ class Task(ft.UserControl):
     def add_description(self, e):
         self.post_note.visible=False
         self.post_note.disabled=True
+
         self.description.value=self.notes.value
         self.description.selectable=True
         self.description.visible=True
         self.description.disabled=False
         self.description.extension_set=ft.MarkdownExtensionSet.GITHUB_WEB
+        self.description.code_theme="atom-one-dark"
+        self.description.code_style=ft.TextStyle(font_family="Roboto Mono")
          
         self.update()
     
