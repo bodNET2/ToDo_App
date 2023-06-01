@@ -1,5 +1,6 @@
 import status as st
 import flet as ft
+import Timer as ti
 
 class Task(ft.UserControl):
     def __init__(self, name=None):
@@ -82,6 +83,8 @@ class Task(ft.UserControl):
         self.edit = ft.TextField(value=self.display_task.label, 
                                  on_submit=self.end_edit_task, visible=False, disabled=True)
 
+        self.pomodoro = ti.Timer()
+
         task_menu = ft.Row(    
             controls = [
                 self.edit,
@@ -124,8 +127,10 @@ class Task(ft.UserControl):
     
 
         return ft.Column(
+            width = 600,
             controls = [
                 task_view,
+                self.pomodoro,
                 self.post_note,
                 self.description 
             ]    

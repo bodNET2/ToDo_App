@@ -146,6 +146,7 @@ class Timer(ft.UserControl):
         self.input_container.content = ft.TextField(hint_text = "Enter a time", on_submit = self.close_input)
         self.input_container.disabled = False
         self.input_container.visible = True
+        self.clock.visible = False
         self.update()
 
     def close_input(self, e):
@@ -155,6 +156,7 @@ class Timer(ft.UserControl):
             self.add_time(self.input_container.content.value)
         self.input_container.visible = False
         self.input_container.disabled = True
+        self.clock.visible = True
         self.clock.value = self.display_time()
         self.update()
 
