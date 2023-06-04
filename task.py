@@ -163,7 +163,7 @@ class Task(ft.UserControl):
     
 
 
-
+"""
 def main(page: ft.Page):
     page.title = "ToDo App"
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -175,4 +175,4 @@ def main(page: ft.Page):
    
 ft.app(target=main)
 
-
+"""

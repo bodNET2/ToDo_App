@@ -112,7 +112,8 @@ class TaskUI(ft.UserControl):
                self.task_delete(task)
        
        self.update()
-           
+
+"""           
 def main(page: ft.Page):
     page.title = "ToDo App"
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -122,3 +123,4 @@ def main(page: ft.Page):
     page.add(todo)    
    
 ft.app(target=main)
+"""
