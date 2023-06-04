@@ -2,14 +2,16 @@ import status as st
 import flet as ft
 import Timer as ti
 
+
 class Task(ft.UserControl):
-    def __init__(self, name=None):
+    def __init__(self, name, del_fun):
         super().__init__()
         if (name is not None):
             self.name = name
         else:
             self.name = ""
         
+        self.del_fun= del_fun
         self.description = ft.Markdown(visible=False, disabled=True)
        
         self.notes = ft.TextField(
@@ -34,7 +36,7 @@ class Task(ft.UserControl):
         
         
         self.status = st.Status.NOT_STARTED
-        self.timer = None
+        self.pomodoro = ti.Timer(self.start_status)
         self.subTasks = []
 
     
@@ -52,11 +54,26 @@ class Task(ft.UserControl):
          
         self.update()
     
+    def start_status(self):
+        if (self.status == st.Status.NOT_STARTED):
+            self.status = st.Status.IN_PROGRESS 
+        
+        #print(self.status)
+        return
+
+    def set_status(self, e):
+        if (self.display_task.value):
+            self.status = st.Status.COMPLETE
+        else:
+            self.status = st.Status.IN_PROGRESS
+        
+        #print(self.status)
 
     def add_subTasks(self, subtask):
         self.subTasks.append(subtask)
 
     def make_notes_visible(self, e):
+        self.start_status()
         self.post_note.disabled=False
         self.post_note.visible=True
 
@@ -65,6 +82,7 @@ class Task(ft.UserControl):
         self.update()
 
     def start_edit_task(self, e):
+        self.start_status()
         self.display_task.visible = False
         self.edit.disabled = False
         self.edit.visible = True
@@ -77,13 +95,19 @@ class Task(ft.UserControl):
         self.edit.disabled = True  
         self.update()
 
+    def delete_task(self, e):
+        self.del_fun(self)
+
     def build(self):
-        self.display_task = ft.Checkbox(value = False, label = self.name)
+        self.display_task = ft.Checkbox(value = False, label = self.name, 
+                                        scale=1.3, on_change=self.set_status)
 
         self.edit = ft.TextField(value=self.display_task.label, 
                                  on_submit=self.end_edit_task, visible=False, disabled=True)
 
-        self.pomodoro = ti.Timer()
+                
+        #
+            
 
         task_menu = ft.Row(    
             controls = [
@@ -98,7 +122,7 @@ class Task(ft.UserControl):
                     icon=ft.icons.DELETE_ROUNDED,
                     icon_size= 20,
                     tooltip = "Delete task",
-                    # on_click=self.pause
+                    on_click=self.delete_task
                 ),
                 ft.IconButton(
                     icon=ft.icons.NOTES,
@@ -127,12 +151,12 @@ class Task(ft.UserControl):
     
 
         return ft.Column(
-            width = 600,
+            #width = 600,
             controls = [
                 task_view,
                 self.pomodoro,
                 self.post_note,
-                self.description 
+                self.description
             ]    
         )
         
@@ -145,7 +169,7 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.update()
 
-    g = Task("ghorp")
+    g = Task("ghorp", id)
     # clock = Ti.Timer()
     page.add(g)    
    

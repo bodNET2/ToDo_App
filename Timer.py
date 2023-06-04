@@ -32,7 +32,7 @@ def string_parse(stri):
 
 
 class Timer(ft.UserControl):
-    def __init__(self, full_time=[0,0,0]):
+    def __init__(self, progress_fun, full_time=[0,0,0]):
         # cur_time[0]: hours
         # cur_time[1]: minutes
         # cur_time[2]: seconds
@@ -42,6 +42,7 @@ class Timer(ft.UserControl):
         self.th = None
         self.clock = ft.Text(size = 20)
         self.input_container = ft.Container()
+        self.progress_fun = progress_fun
 
         if (full_time == 0):
             self.full_time = 0
@@ -104,11 +105,14 @@ class Timer(ft.UserControl):
     
     
     def start_countdown(self, e):
+        self.progress_fun()
         self.th = threading.Thread(target = self.countdown, args= (e,), daemon=True)
         self.th.start()
     
+    
     def will_unmount(self):
-        self.pause()
+        self.running = False
+        #self.pause()
 
     
     def countdown(self, e):
